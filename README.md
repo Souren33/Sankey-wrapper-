@@ -1,2 +1,2 @@
-# DS3500
-General container for my work in DS3500 at Northeastern University
+# ds3500_fa24
+Class repo for DS3500 (Fa24): Handouts, coding examples, slides.
