@@ -25,8 +25,6 @@ def code_mapping(df, src, targ):
     # Substitute codes for labels in the dataframe
     df = df.replace({src: lc_map, targ: lc_map})
 
-
-    print(lc_map)
     return df, labels
 
 
@@ -61,10 +59,8 @@ def make_sankey(df, src, targ, vals=None, **kwargs):
 def main():
 
     bio = pd.read_csv('bio.csv')
+    make_sankey(bio, 'cancer', 'gene', 'evidence')
 
-    print(bio)
-    #make_sankey(bio, 'cancer', 'gene', 'evidence')
-    code_mapping(bio, 'cancer', 'gene')
 
 if __name__ == '__main__':
     main()
