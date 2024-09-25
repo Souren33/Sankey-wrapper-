@@ -3,22 +3,43 @@ import plotly.graph_objects as go
 import sankey as sk
 
 def read_data(path):
+    #simple function to read path to pd
     art = pd.read_json(path)
     return art
 
 
 def clean_data(df):
+    """
+
+    :param df: any data frame
+    :return: returns a data frame converting all values in begin column to a float then rounded to nearest decade
+    """
+
     df.loc[:, 'BeginDate'] = df['BeginDate'].astype(float).apply(lambda x: round(x / 10) * 10)
     return df
 
 
 def filter_base_on_val(df, val, column_name):
+    """
+
+    :param df: dataframe that has been rounded
+    :param val: the value wanted to filter by
+    :param column_name: the column which is desired to be filtered
+    :return: dataframe that dropped all the data below that value
+    """
     # Filter rows where the column value is greater than the specified value
     filtered = df[df[column_name] > val]
     return filtered
 
 
 def grouping_data(df, new_column, **kwargs):
+    """
+
+    :param df: dataframe that data has been formatted
+    :param new_column: the name of a new column
+    :param kwargs: the different groups that you want to group by
+    :return: returns a dataframe that adds that column that was grouped by
+    """
     groupings = list(kwargs.values())
     combined_filter = df.groupby(groupings).size().reset_index(name=new_column)
     return combined_filter
@@ -60,7 +81,7 @@ def main():
 
     gender_decade_columns = ["Gender", "BeginDate"]
 
-    #sk.SP_make_sankey(filter_gendered_data,gender_decade_columns,"GenderAmount", "GenderAmount" )
+    sk.SP_make_sankey(filter_gendered_data,gender_decade_columns,"GenderAmount", "GenderAmount" )
 
 
 
