@@ -63,7 +63,7 @@ def main():
     bio = pd.read_csv('bio.csv')
 
     print(bio)
-    #make_sankey(bio, 'cancer', 'gene', 'evidence')
+    make_sankey(bio, 'cancer', 'gene', 'evidence')
     code_mapping(bio, 'cancer', 'gene')
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 import pandas as pd
 import plotly.graph_objects as go
-
+import sankey as sk
 
 def read_data(path):
     art = pd.read_json(path)
@@ -24,36 +24,6 @@ def grouping_data(df, new_column, **kwargs):
     return combined_filter
 
 
-def diff_code_mapping(df, src, targ):
-    # Create a dictionary to map source and target values to unique codes
-    sources = {}
-    i = 0
-    for name in pd.concat([df[src], df[targ]]).unique():
-        sources[name] = i
-        i += 1
-
-    df = df.replace({src: sources, targ: sources})
-    labels = list(sources.keys())
-
-    return df, labels
-
-
-def make_sankey(df, src, targ, vals=None, **kwargs):
-    if vals:
-        values = df[vals]
-    else:
-        values = [1] * len(df)
-
-    df, labels = diff_code_mapping(df, src, targ)
-
-    link = {'source': df[src], 'target': df[targ], 'value': values}
-    node = {'label': labels}
-
-    sk = go.Sankey(link=link, node=node)
-    fig = go.Figure(sk)
-    fig.show()
-
-
 def main():
     # Step 1: Load data
     art_path = r"C:\Users\Souren Prakash\Downloads\artists.json"
@@ -72,11 +42,38 @@ def main():
     grouped_data = grouping_data(clean_art_data, "ArtistAmount", group1="Nationality", group2="BeginDate")
 
     # Step 5: Further filter the grouped data based on a threshold
-    filtered_group_data = filter_base_on_val(grouped_data, 35, "ArtistAmount")
+    filtered_group_data = filter_base_on_val(grouped_data, 20, "ArtistAmount")
 
-    # Step 6: Create Sankey diagram
-    make_sankey(filtered_group_data, 'Nationality', 'BeginDate', 'ArtistAmount')
 
+    # Step 6: Create Sankey diagram to display nationality and begin date, artist amount is
+    #creating col group for nationality and Begin date
+    Nationality_BeginDate = ['Nationality', 'BeginDate']
+    #sk.SP_make_sankey(filtered_group_data, Nationality_BeginDate,'ArtistAmount', 'ArtistAmount')
+
+
+    # Step 7 Creating sankey diagram grouped by gender and decade
+
+    gendered_data = grouping_data(clean_art_data, 'GenderAmount', group1="Gender", group2="BeginDate")
+
+    filter_gendered_data = filter_base_on_val(gendered_data, 20, "GenderAmount")
+    #graphing on sankey
+
+    gender_decade_columns = ["Gender", "BeginDate"]
+
+    #sk.SP_make_sankey(filter_gendered_data,gender_decade_columns,"GenderAmount", "GenderAmount" )
+
+
+
+    #print(clean_art_data)
+    multi_grouped = grouping_data(clean_art_data, 'GenderAmount',group1="Nationality", group2="Gender", group3="BeginDate")
+    #the last sankey should be multilayered and using stacked function to get correct format
+
+    #columns of focus for final multilayered sankey
+    multicolumn = ['Nationality', 'Gender', 'BeginDate']
+
+    #reducing amount of data by filtering by certain amount
+    filter_multi_grouped = filter_base_on_val(multi_grouped, 20, "GenderAmount")
+    sk.SP_make_sankey(filter_multi_grouped, multicolumn, 'GenderAmount', 'GenderAmount')
 
 if __name__ == '__main__':
     main()
