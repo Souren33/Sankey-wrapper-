@@ -69,7 +69,7 @@ def main():
     # Step 6: Create Sankey diagram to display nationality and begin date, artist amount is
     #creating col group for nationality and Begin date
     Nationality_BeginDate = ['Nationality', 'BeginDate']
-    #sk.SP_make_sankey(filtered_group_data, Nationality_BeginDate,'ArtistAmount', 'ArtistAmount')
+    sk.SP_make_sankey(filtered_group_data, Nationality_BeginDate,'ArtistAmount', 'ArtistAmount')
 
 
     # Step 7 Creating sankey diagram grouped by gender and decade
